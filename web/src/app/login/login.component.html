@@ -1,5 +1,11 @@
 <form [formGroup]="loginForm" (ngSubmit)="login()">
-  <input formControlName="username" type="text">
-  <input formControlName="password" type="password">
-  <button>Login</button>
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="username" type="text">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password" type="password">
+  </mat-form-field>
+  <button mat-flat-button color="primary">Login</button>
 </form>
