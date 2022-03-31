@@ -2,3 +2,4 @@
 dndapp/localsettings.py
 **/__pycache__
 **/*.py[cod]
+*.sqlite3
