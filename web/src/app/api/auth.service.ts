@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpRequest } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 
 export type TokenResponse = {
   access: string,
@@ -16,12 +16,25 @@ export type TokenRequest = {
   providedIn: 'root'
 })
 export class AuthService {
+  token?: TokenResponse;
 
   constructor(
     private http: HttpClient,
   ) { }
 
   login(tokenRequest: TokenRequest): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>('/api/token/', tokenRequest);
+    return this.http.post<TokenResponse>('/api/token/', tokenRequest).pipe(
+      tap(token => this.token = token),
+    );
+  }
+
+  logout(): void {
+    this.token = undefined;
+  }
+
+  addAuthHeader(request: HttpRequest<unknown>): HttpRequest<unknown> {
+    return this.token ? request.clone({
+      headers: request.headers.set('Authorization', `Bearer ${this.token.access}`)
+    }) : request;
   }
 }
