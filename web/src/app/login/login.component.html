@@ -1,4 +1,5 @@
 <form [formGroup]="loginForm" (ngSubmit)="login()">
+  <p class="mat-error">{{ errorMessage }}</p>
   <mat-form-field>
     <mat-label>Email</mat-label>
     <input matInput formControlName="username" type="text">

@@ -13,12 +13,20 @@ export class LoginComponent {
     password: new FormControl(''),
   });
 
+  errorMessage?: string;
+
   constructor(
     private auth: AuthService,
   ) { }
 
   login(): void {
-    this.auth.login(this.loginForm.value).subscribe(console.log);
+    this.errorMessage = undefined;
+    this.auth.login(this.loginForm.value).subscribe({
+      next: console.log,
+      error: err => {
+        this.errorMessage = 'Incorrect email or password.';
+      },
+    });
   }
 
 }
