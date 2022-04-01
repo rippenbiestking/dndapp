@@ -12,5 +12,9 @@ form {
   .actions {
     display: flex;
     flex-direction: row;
+
+    :not(:first-child) {
+      margin-left: 5px;
+    }
   }
 }

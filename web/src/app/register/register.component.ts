@@ -1,15 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../api/auth.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
+  registerForm = new FormGroup({
+    email: new FormControl('', [Validators.email, Validators.required ]),
+    password: new FormControl('', [Validators.required, ]),
+    password2: new FormControl('', [Validators.required, ]),
+  });
 
-  constructor() { }
+  errorMessage?: string;
 
-  ngOnInit(): void {
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+  ) { }
+
+  register(): void {
+    this.errorMessage = undefined;
+    this.auth.register(this.registerForm.value).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/dashboard');
+      },
+      error: err => {
+        this.errorMessage = 'Failed to register';
+      },
+    });
   }
-
 }
