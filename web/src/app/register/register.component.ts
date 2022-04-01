@@ -30,6 +30,15 @@ export class RegisterComponent {
       },
       error: err => {
         this.errorMessage = 'Failed to register';
+        console.log(err.error);
+        for (let field in err.error) {
+          this.registerForm.get(field)?.setErrors(
+            (err.error[field] as string[]).reduce((acc, val) => ({
+              ...acc,
+              [val]: true,
+            }), {}),
+          );
+        }
       },
     });
   }
