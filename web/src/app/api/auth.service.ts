@@ -63,4 +63,10 @@ export class AuthService {
       headers: request.headers.set('Authorization', `Bearer ${this.token.access}`)
     }) : request;
   }
+
+  refresh(): Observable<TokenResponse> {
+    return this.http.post<TokenResponse>('/api/token/refresh/', {refresh: this.token?.refresh}).pipe(
+      tap(token => this.token = token)
+    );
+  }
 }

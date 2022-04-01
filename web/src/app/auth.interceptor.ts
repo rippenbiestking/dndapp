@@ -6,7 +6,7 @@ import {
   HttpInterceptor,
   HTTP_INTERCEPTORS
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, switchMap } from 'rxjs';
 import { AuthService } from './api/auth.service';
 
 @Injectable()
@@ -18,7 +18,16 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const authRequest = this.authService.addAuthHeader(request);
-    return next.handle(authRequest);
+    return next.handle(authRequest).pipe(
+      catchError(error => {
+        if (error.status === 401) {
+          return this.authService.refresh().pipe(
+            switchMap(() => next.handle(this.authService.addAuthHeader(request))),
+          );
+        }
+        return of(error);
+      }),
+    );
   }
 }
 
