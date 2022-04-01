@@ -6,7 +6,7 @@ import {
   HttpInterceptor,
   HTTP_INTERCEPTORS
 } from '@angular/common/http';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
 import { AuthService } from './api/auth.service';
 import { Router } from '@angular/router';
 
@@ -27,15 +27,18 @@ export class AuthInterceptor implements HttpInterceptor {
             switchMap(() => next.handle(this.authService.addAuthHeader(request))),
             catchError(err => {
               if (error.status === 401) {
+                this.authService.logout();
                 return this.router.navigateByUrl('/login').then(
-                  () => error
+                  () => {
+                    throw new Error(err);
+                  }
                 );
               }
-              return of(err);
+              return throwError(() => err);;
             })
           );
         }
-        return of(error);
+        return throwError(() => error);
       }),
     );
   }
