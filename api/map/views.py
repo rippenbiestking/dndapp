@@ -1,8 +1,7 @@
-from django.shortcuts import render
+from .filters import ContainsFilter
 from .models import *
 from .serializers import *
 from rest_framework import viewsets
-from rest_framework.response import Response
 
 # Create your views here.
 class WorldView(viewsets.ModelViewSet):
@@ -16,3 +15,4 @@ class MapView(viewsets.ModelViewSet):
 class TileView(viewsets.ModelViewSet):
     queryset = Tile.objects.all()
     serializer_class = TileSerializer
+    filter_backends = ContainsFilter
