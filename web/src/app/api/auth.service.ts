@@ -54,13 +54,19 @@ export class AuthService {
     );
   }
 
+  register(userInfo: any): Observable<TokenResponse> {
+    return this.http.post<TokenResponse>('/api/register/', userInfo).pipe(
+      tap(token => this.token = token),
+    )
+  }
+
   logout(): void {
     this.token = undefined;
   }
 
   addAuthHeader(request: HttpRequest<unknown>): HttpRequest<unknown> {
     return this.token ? request.clone({
-      headers: request.headers.set('Authorization', `Bearer ${this.token.access}`)
+      headers: request.headers.set('Authorization', `Bearer ${this.token.access}`),
     }) : request;
   }
 
