@@ -1,4 +1,4 @@
-from .filters import ContainsFilter
+from .filters import ContainsFilter, MapFilter
 from .models import *
 from .serializers import *
 from rest_framework import viewsets
@@ -15,4 +15,4 @@ class MapView(viewsets.ModelViewSet):
 class TileView(viewsets.ModelViewSet):
     queryset = Tile.objects.all()
     serializer_class = TileSerializer
-    filter_backends = ContainsFilter
+    filter_backends = [ContainsFilter, MapFilter, ]
