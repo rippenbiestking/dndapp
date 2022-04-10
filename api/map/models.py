@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import User
 
@@ -26,10 +26,7 @@ class Map(models.Model):
 
 class Tile(models.Model):
     parent_map = models.ForeignKey(Map, on_delete = models.CASCADE)
-    position = ArrayField(
-        models.IntegerField(),
-        size = 2
-    )
+    position = models.PointField()
     BIOME_CHOICES = [('D','Desert'), ('G','Grassland'), ('O','Ocean')]
     biome = models.CharField(max_length = 1, choices = BIOME_CHOICES)
     TERRAIN_CHOICES = [('F','Forest'), ('M','Mountain')]
