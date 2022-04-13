@@ -13,6 +13,11 @@ class MapSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TileSerializer(serializers.ModelSerializer):
+    position = serializers.SerializerMethodField()
+
     class Meta:
         model = Tile
         fields = '__all__'
+
+    def get_position(self, obj):
+        return obj.position.coords

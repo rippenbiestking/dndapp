@@ -21,4 +21,12 @@ export class MapService {
   getMaps() : Observable <Map[]> {
     return this.http.get<Map[]>('/api/maps/');
   }
+
+  getMapsByWorld(worldId: number): Observable<Map[]> {
+    return this.http.get<Map[]>('/api/maps/', {
+      params: {
+        world: worldId,
+      },
+    });
+  }
 }
