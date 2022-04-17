@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>New Map</h1>
+<form [formGroup]="addMapForm" (ngSubmit)="submit()">
+    <div mat-dialog-content>
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName = "name"/>
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close] type="button">Cancel</button>
+        <button mat-button [disabled]="addMapForm.invalid">Create</button>
+    </div>
+</form>

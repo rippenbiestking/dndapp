@@ -1,0 +1,38 @@
+<div class="sidebar">
+    <div class="map-title">
+        Current Map
+    </div>
+    <div class="tile-selector">
+        <div class="biome-selector">
+            <mat-button-toggle-group [(ngModel)]="selectedBiome">
+                <mat-button-toggle *ngFor="let biome of biomeTypes" [value]="biome.value">{{biome.name}}</mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+    </div>
+</div>
+<div class="map">
+    <svg #svg viewBox="0 0 1 1">
+        <defs>
+            <pattern patternUnits="objectBoundingBox" id="O" width="1" height="1">
+                <image href="/assets/art/biomes/oceanTile64.png" height="1" width="1" x="0" y="0"></image>
+            </pattern>
+            <pattern patternUnits="objectBoundingBox" id="G" width="1" height="1">
+                <image href="/assets/art/biomes/grassTile64.png" height="1" width="1" x="0" y="0"></image>
+            </pattern>
+            <pattern patternUnits="objectBoundingBox" id="D" width="1" height="1">
+                <image href="/assets/art/biomes/desertTile64.png" height="1" width="1" x="0" y="0"></image>
+            </pattern>
+        </defs>
+        <g [attr.transform]="'translate(' + transX + ' ' + transY + ') scale(' + scale + ')'">
+            <rect
+                *ngFor="let tile of tiles"
+                class="rect"
+                width="1"
+                height="1"
+                [attr.x]="tile.position[0]"
+                [attr.y]="tile.position[1]"
+                [attr.fill]="'url(#'+tile.biome+')'"
+            ></rect>
+        </g>
+    </svg>
+</div>

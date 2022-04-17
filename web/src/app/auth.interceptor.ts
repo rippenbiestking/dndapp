@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const authRequest = this.authService.addAuthHeader(request);
     return next.handle(authRequest).pipe(
       catchError(error => {
-        if (error.status === 401) {
+        if (error.status === 401 && !error.url.endsWith('token/refresh/') ) {
           return this.authService.refresh().pipe(
             switchMap(() => next.handle(this.authService.addAuthHeader(request))),
             catchError(err => {

@@ -8,6 +8,10 @@ export interface World {
   owner?  : number;
 }
 
+export interface WorldFormData {
+  name : string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,5 +21,13 @@ export class WorldService {
 
   getWorlds() : Observable <World[]> {
     return this.http.get<World[]>('/api/worlds/');
+  }
+
+  getWorldById(w : number) : Observable <World> {
+    return this.http.get<World>(`/api/worlds/${w}/`);
+  }
+
+  postWorld(w : WorldFormData) {
+    return this.http.post<World>('/api/worlds/', w);
   }
 }

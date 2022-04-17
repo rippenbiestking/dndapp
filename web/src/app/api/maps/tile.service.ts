@@ -21,4 +21,12 @@ export class TileService {
   getTiles() : Observable <Tile[]> {
     return this.http.get<Tile[]>('/api/tiles/');
   }
+
+  getTileByMap(mapId: number): Observable<Tile[]> {
+    return this.http.get<Tile[]>('/api/tiles/', {
+      params: {
+        map: mapId,
+      },
+    });
+  }
 }

@@ -15,7 +15,9 @@ class Map(models.Model):
     world = models.ForeignKey(World, on_delete = models.CASCADE)
     size = ArrayField(
         models.IntegerField(),
-        size = 2
+        size = 2,
+        null = True,
+        blank = True,
     )
     MAP_TYPE_CHOICES = [('W','World'), ('R','Region'), ('E','Encounter')]
     map_type = models.CharField(max_length=1, choices = MAP_TYPE_CHOICES)

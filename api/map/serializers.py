@@ -6,6 +6,13 @@ class WorldSerializer(serializers.ModelSerializer):
     class Meta:
         model = World
         fields = '__all__'
+        
+    def create(self, validated_data):
+        world = World.objects.create(
+            name = validated_data['name'],
+            owner = validated_data['owner'],
+        )
+        return world
 
 class MapSerializer(serializers.ModelSerializer):
     class Meta:

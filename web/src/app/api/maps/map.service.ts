@@ -6,9 +6,21 @@ export interface Map {
   id? : number;
   name : string;
   world : number;
-  size : number[];
+  size? : number[];
   parent_tile? : number;
-  map_type : string;
+  map_type : MapType;
+}
+
+export interface MapForm {
+  name : string;
+  world : number;
+  map_type : MapType;
+}
+
+export enum MapType {
+  WORLD = "W",
+  REGION = "R",
+  ENCOUNTER = "E",
 }
 
 @Injectable({
@@ -28,5 +40,9 @@ export class MapService {
         world: worldId,
       },
     });
+  }
+
+  postMap(m : MapForm) {
+    return this.http.post<Map>('/api/maps/', m);
   }
 }
