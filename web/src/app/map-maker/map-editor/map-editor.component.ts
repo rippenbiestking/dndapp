@@ -9,9 +9,9 @@ import { Tile } from 'src/app/api/maps/tile.service';
 export class MapEditorComponent implements OnInit {
   
   biomeTypes = [
-    {name : "Ocean", value : "O"},
-    {name : "Grassland", value : "G"},
-    {name : "Desert", value : "D"},
+    {name : "Ocean", value : "O", URL : "/assets/art/biomes/oceanTile64.png"},
+    {name : "Grassland", value : "G", URL : "/assets/art/biomes/grassTile64.png"},
+    {name : "Desert", value : "D", URL : "/assets/art/biomes/desertTile64.png"},
   ];
   selectedBiome = "O";
   transX = 0;
