@@ -7,8 +7,8 @@ export interface Tile {
   parent_map? : number;
   position : number[];
   biome : string;
-  terrain? : string;
-  habitation? : string;
+  terrain : string | null;
+  habitation : string | null;
 }
 
 @Injectable({
@@ -21,4 +21,18 @@ export class TileService {
   getTiles() : Observable <Tile[]> {
     return this.http.get<Tile[]>('/api/tiles/');
   }
+
+  getTileByMap(mapId: number): Observable<Tile[]> {
+    return this.http.get<Tile[]>('/api/tiles/', {
+      params: {
+        map: mapId,
+      },
+    });
+  }
+
+  createOrUpdate(tile : Tile): Observable<Tile> {
+    return tile.id ? this.http.patch<Tile>(`/api/tiles/${tile.id}/`, tile) : this.http.post<Tile>('api/tiles/', tile);
+  }
+
+
 }

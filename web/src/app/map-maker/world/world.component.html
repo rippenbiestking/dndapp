@@ -1,0 +1,38 @@
+<div class="header">
+    <h1>
+        {{(world$ | async)?.name}}
+    </h1>
+</div>
+<div class="lists">
+    <div class="list-block">
+        <div class="list-header">
+            <h2>Travel</h2>
+            <button mat-icon-button (click)="openAddMap()"><mat-icon>add</mat-icon></button>
+        </div>
+        <div class="list">
+            <mat-list>
+                <ng-container *ngFor="let map of maps$ | async">
+                    <ng-container *ngIf="map.map_type === 'W' || map.map_type ==='R'">
+                        <a mat-list-item [routerLink] = "['/maps', map.id]"> {{map.name}} </a>
+                    </ng-container>
+                </ng-container>
+            </mat-list>
+        </div>
+    </div>
+    <div class="list-block">
+        <div class="list-header">
+            <h2>Encounter</h2>
+            <button mat-icon-button (click)="openAddMap(false)"><mat-icon>add</mat-icon></button>
+        </div>
+        <div class="list">
+            <mat-list>
+                <ng-container *ngFor="let map of maps$ | async">
+                    <ng-container *ngIf="map.map_type ==='E'">
+                        <a mat-list-item [routerLink] = "['/maps', map.id]"> {{map.name}} </a>
+                    </ng-container>
+                </ng-container>
+            </mat-list>
+        </div>      
+    </div>
+</div>
+

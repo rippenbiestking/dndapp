@@ -13,6 +13,7 @@ const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
   },
+  { path: 'maps', loadChildren: () => import('./map-maker/map-maker.module').then(m => m.MapMakerModule) },
   {
     path: '**',
     component: NotFoundComponent,

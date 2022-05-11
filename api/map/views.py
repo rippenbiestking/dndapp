@@ -8,6 +8,10 @@ class WorldView(viewsets.ModelViewSet):
     queryset = World.objects.all()
     serializer_class = WorldSerializer
 
+    def create(self, request):
+        request.data['owner'] = request.user.id
+        return super().create(request)
+
 class MapView(viewsets.ModelViewSet):
     queryset = Map.objects.all()
     serializer_class = MapSerializer

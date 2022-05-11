@@ -1,0 +1,50 @@
+<div class="sidebar">
+    <div class="map-title">
+        Current Map
+    </div>
+    <div class="tile-selector">
+        <div class="biome-selector">
+            <mat-button-toggle-group [(ngModel)]="selectedBiome">
+                <mat-button-toggle *ngFor="let biome of biomeTypes" [value]="biome.value">{{biome.name}}</mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+        <div class="terrain-selector">
+            <mat-button-toggle-group [(ngModel)]="selectedTerrain">
+                <mat-button-toggle [value]="null" checked>None</mat-button-toggle>
+                <mat-button-toggle *ngFor="let terrain of terrainTypes" [value]="terrain.value">{{terrain.name}}</mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+    </div>
+</div>
+<div class="map">
+    <svg #svg viewBox="0 0 1 1">
+        <defs>
+            <pattern *ngFor="let biome of biomeTypes" patternUnits="objectBoundingBox" [id]="biome.value" width="1" height="1">
+                <image [attr.href]="biome.URL" height="1" width="1" x="0" y="0"></image>
+            </pattern>
+            <pattern *ngFor="let terrain of terrainTypes" patternUnits="objectBoundingBox" [id]="terrain.value" width="1" height="1">
+                <image [attr.href]="terrain.URL" height="1" width="1" x="0" y="0"></image>
+            </pattern>
+        </defs>
+        <g [attr.transform]="'translate(' + transX + ' ' + transY + ') scale(' + scale + ')'">
+            <ng-container *ngFor="let tile of tiles">
+                <rect
+                class="rect"
+                width="1"
+                height="1"
+                [attr.x]="tile.position[0]"
+                [attr.y]="tile.position[1]"
+                [attr.fill]="'url(#'+tile.biome+')'"
+                ></rect>
+                <rect
+                class="rect"
+                width="1"
+                height="1"
+                [attr.x]="tile.position[0]"
+                [attr.y]="tile.position[1]"
+                [attr.fill]="'url(#'+tile.terrain+')'"
+                ></rect>
+            </ng-container>
+        </g>
+    </svg>
+</div>

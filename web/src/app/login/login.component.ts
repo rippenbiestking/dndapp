@@ -25,7 +25,7 @@ export class LoginComponent {
     this.errorMessage = undefined;
     this.auth.login(this.loginForm.value).subscribe({
       next: () => {
-        this.router.navigateByUrl('/dashboard');
+        this.router.navigateByUrl('/maps');
       },
       error: err => {
         this.errorMessage = 'Incorrect email or password.';

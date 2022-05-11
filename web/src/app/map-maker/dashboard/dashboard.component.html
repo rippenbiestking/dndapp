@@ -1,0 +1,11 @@
+<div class="header">
+    <h2>
+        Worlds
+    </h2>
+    <button mat-icon-button (click)="openAddWorld()"><mat-icon>add</mat-icon></button>
+</div>
+<mat-list>
+    <ng-container *ngFor="let world of worlds$ | async">
+        <a mat-list-item [routerLink] = "['worlds', world.id]"> {{world.name}} </a>
+    </ng-container>
+</mat-list>
