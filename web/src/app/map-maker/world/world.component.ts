@@ -23,7 +23,6 @@ export class WorldComponent implements OnInit {
 
   openAddMap(isTravel : boolean = true) {
     this.dialog.open(CreateMapDialog).afterClosed().pipe(
-      tap(console.log),
       filter(v => !!v),
       withLatestFrom(this.world$),
       switchMap(([data, world]) => this.mapService.postMap({

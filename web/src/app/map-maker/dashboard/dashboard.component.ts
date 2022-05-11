@@ -24,7 +24,6 @@ export class DashboardComponent implements OnInit {
 
   openAddWorld() {
     this.dialog.open(CreateWorldDialog).afterClosed().pipe(
-      tap(console.log),
       filter(v => !!v),
       switchMap(d => this.worldService.postWorld(d))
     ).subscribe(() => this.worlds$ = this.worldService.getWorlds());
