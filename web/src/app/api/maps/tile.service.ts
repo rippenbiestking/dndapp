@@ -7,8 +7,8 @@ export interface Tile {
   parent_map? : number;
   position : number[];
   biome : string;
-  terrain? : string;
-  habitation? : string;
+  terrain : string | null;
+  habitation : string | null;
 }
 
 @Injectable({
