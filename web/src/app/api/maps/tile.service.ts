@@ -29,4 +29,10 @@ export class TileService {
       },
     });
   }
+
+  createOrUpdate(tile : Tile): Observable<Tile> {
+    return tile.id ? this.http.patch<Tile>(`/api/tiles/${tile.id}/`, tile) : this.http.post<Tile>('api/tiles/', tile);
+  }
+
+
 }

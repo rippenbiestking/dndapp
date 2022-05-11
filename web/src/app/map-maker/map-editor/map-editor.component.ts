@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { fromEvent, pluck, startWith, Subject, switchMap, takeUntil } from 'rxjs';
-import { Tile } from 'src/app/api/maps/tile.service';
+import { ActivatedRoute } from '@angular/router';
+import { find, fromEvent, map, pluck, startWith, Subject, switchMap, takeUntil, withLatestFrom } from 'rxjs';
+import { Tile, TileService } from 'src/app/api/maps/tile.service';
 
 @Component({
   selector: 'app-map-editor',
@@ -26,17 +27,29 @@ export class MapEditorComponent implements OnInit, AfterViewInit, OnDestroy {
   scale  = 0.25;
   tiles : Tile[] = [];
   destroyed$ = new Subject<null>();
+  tileSubject$ = new Subject<Tile>();
 
   @ViewChild('svg', {static : true})
   svgElement! : ElementRef<SVGElement>;
 
-  constructor() { }
+  constructor(private tileService : TileService, private route : ActivatedRoute) { }
 
   ngOnDestroy(): void {
     this.destroyed$.next(null);
+    this.destroyed$.complete();
+    this.tileSubject$.complete();
   }
 
   ngOnInit(): void {
+    const mapId$ = this.route.params.pipe(takeUntil(this.destroyed$), pluck('mapId'));
+    mapId$.pipe(switchMap(mapId => this.tileService.getTileByMap(mapId))).subscribe(tiles => this.tiles = tiles);
+    this.tileSubject$.pipe(
+      withLatestFrom(mapId$), 
+      map(([tile, mapId]) => ({...tile, parent_map : mapId})), 
+      switchMap(tile => this.tileService.createOrUpdate(tile))
+    ).subscribe(
+      tile => this.tiles.find(t => t.position[0] === tile.position[0] && t.position[1] === tile.position[1])!.id = tile.id
+    );
   }
 
   ngAfterViewInit(): void {
@@ -60,15 +73,18 @@ export class MapEditorComponent implements OnInit, AfterViewInit, OnDestroy {
           const y = Math.floor(
             (mouseEvent.offsetY * modifier - this.transY) / this.scale
           );
-          const tile = this.tiles.find(
+          let tile = this.tiles.find(
             t => t.position[0] === x && t.position[1] === y
           );
           if (tile) {
+            if (tile.biome === this.selectedBiome && tile.terrain === this.selectedTerrain) return;
             tile.biome = this.selectedBiome;
             tile.terrain = this.selectedTerrain;
-            return;
+          } else {
+            tile = {position : [x,y], biome : this.selectedBiome, terrain : this.selectedTerrain, habitation : this.selectedHabitation};
+            this.tiles.push(tile);
           }
-          this.tiles.push({position : [x,y], biome : this.selectedBiome, terrain : this.selectedTerrain, habitation : this.selectedHabitation});
+          this.tileSubject$.next(tile);
         }
       );
 
